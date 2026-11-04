@@ -133,10 +133,24 @@
       drawerBrand.prepend(logo);
     }
 
-    document.querySelectorAll('link[rel~="icon"]').forEach(link => {
-      link.type = 'image/svg+xml';
-      link.href = './studyai-logo.svg';
-    });
+    /* Keep a crawler-friendly PNG favicon; SVG remains the in-app brand asset. */
+    let favicon = document.querySelector('link[rel~="icon"]');
+    if (!favicon) {
+      favicon = document.createElement('link');
+      favicon.rel = 'icon';
+      document.head.appendChild(favicon);
+    }
+    favicon.type = 'image/png';
+    favicon.sizes = '192x192';
+    favicon.href = './icon-192.png';
+
+    let appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+    if (!appleIcon) {
+      appleIcon = document.createElement('link');
+      appleIcon.rel = 'apple-touch-icon';
+      document.head.appendChild(appleIcon);
+    }
+    appleIcon.href = './icon-192.png';
     document.querySelectorAll('.saiInstallLogo, .saiInstallSettingsIcon').forEach(holder => {
       if (holder.querySelector('img')) return;
       const logo = document.createElement('img');
