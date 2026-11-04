@@ -1,5 +1,5 @@
 /* StudyAI PWA: device-aware install menu and stable standalone launch */
-const CACHE_VERSION = 'studyai-v24';
+const CACHE_VERSION = 'studyai-v25';
 const APP_SHELL = [
   './',
   './index.html',
@@ -25,13 +25,16 @@ async function addBrowserExtras(response) {
   if (!contentType.includes('text/html')) return response;
 
   const html = await response.text();
-  if (html.includes('studyai-install-loader') || html.includes('studyai-touch-polish')) {
-    const headers = new Headers(response.headers);
-    ['content-length', 'content-encoding', 'etag', 'content-md5'].forEach(name => headers.delete(name));
-    return new Response(html, { status: response.status, statusText: response.statusText, headers });
+  const hasInjectedExtras = html.includes('studyai-install-loader') || html.includes('studyai-touch-polish');
+  const hasPngFavicon = /<link\\b[^>]*rel=["'][^"']*\\bicon\\b[^"']*["'][^>]*href=["'][^"']*icon-192\\.png["']/i.test(html);
+  let updatedHtml = html;
+  if (!hasPngFavicon) {
+    updatedHtml = updatedHtml.replace(/<\\/head>/i, '<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"><link rel="apple-touch-icon" href="./icon-192.png"></head>');
   }
-
-  const updatedHtml = html.replace(/<\/head>/i, BROWSER_EXTRAS + '</head>');
+  if (!hasInjectedExtras) {
+    updatedHtml = updatedHtml.replace(/<\\/head>/i, BROWSER_EXTRAS + '</head>');
+  }
+  if (updatedHtml === html) return response;
   const headers = new Headers(response.headers);
   ['content-length', 'content-encoding', 'etag', 'content-md5'].forEach(name => headers.delete(name));
   return new Response(updatedHtml, { status: response.status, statusText: response.statusText, headers });
