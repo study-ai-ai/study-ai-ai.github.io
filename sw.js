@@ -26,10 +26,10 @@ async function addBrowserExtras(response) {
 
   const html = await response.text();
   const hasInjectedExtras = html.includes('studyai-install-loader') || html.includes('studyai-touch-polish');
-  const hasPngFavicon = /<link\\b[^>]*rel=["'][^"']*\\bicon\\b[^"']*["'][^>]*href=["'][^"']*icon-192\\.png["']/i.test(html);
+  const hasPngFavicon = /<link\b[^>]*rel=["'][^"']*\bicon\b[^"']*["'][^>]*href=["'][^"']*icon-192\.png["']/i.test(html);
   let updatedHtml = html;
   if (!hasPngFavicon) {
-    updatedHtml = updatedHtml.replace(/<\\/head>/i, '<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"><link rel="apple-touch-icon" href="./icon-192.png"></head>');
+    updatedHtml = updatedHtml.replace(/<\/head>/i, '<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"><link rel="apple-touch-icon" href="./icon-192.png"></head>');
   }
   if (!hasInjectedExtras) {
     updatedHtml = updatedHtml.replace(/<\\/head>/i, BROWSER_EXTRAS + '</head>');
