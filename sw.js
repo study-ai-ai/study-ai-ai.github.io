@@ -18,7 +18,7 @@ button, a, [role="button"] { touch-action: manipulation; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
-</style><script id="studyai-install-loader" src="./install.js" defer><\/script>`;
+</style><script id="studyai-install-loader" src="./install.js" defer></script>`;
 
 async function addBrowserExtras(response) {
   if (!response || !response.ok) return response;
