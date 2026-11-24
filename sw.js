@@ -1,5 +1,5 @@
 /* StudyAI PWA: device-aware install menu and stable standalone launch */
-const CACHE_VERSION = 'studyai-v27';
+const CACHE_VERSION = 'studyai-v25';
 const APP_SHELL = [
   './',
   './index.html',
@@ -8,7 +8,6 @@ const APP_SHELL = [
   './icon-512.png',
   './install.js',
   './app-polish.js',
-  './reminders.js',
   './studyai-logo.svg'
 ];
 const BROWSER_EXTRAS = `<link rel="icon" type="image/png" href="./icon-192.png"><link rel="apple-touch-icon" href="./icon-192.png"><meta name="theme-color" content="#635bff"><meta name="description" content="StudyAI | AI Learning Hub for Classes 6-12 | AI Tutor"><title>StudyAI | AI Learning Hub for Classes 6-12 | AI Tutor</title><style id="studyai-touch-polish">
@@ -18,7 +17,7 @@ button, a, [role="button"] { touch-action: manipulation; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
-</style><script id="studyai-install-loader" src="./install.js" defer></script>`;
+</style><script id="studyai-install-loader" src="./install.js" defer><\/script>`;
 
 async function addBrowserExtras(response) {
   if (!response || !response.ok) return response;
@@ -33,10 +32,7 @@ async function addBrowserExtras(response) {
     updatedHtml = updatedHtml.replace(/<\/head>/i, '<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"><link rel="apple-touch-icon" href="./icon-192.png"></head>');
   }
   if (!hasInjectedExtras) {
-    updatedHtml = updatedHtml.replace(/<\/head>/i, BROWSER_EXTRAS + '</head>');
-  }
-  if (!updatedHtml.includes('studyai-reminders-loader')) {
-    updatedHtml = updatedHtml.replace(/<\/head>/i, '<script id="studyai-reminders-loader" src="./reminders.js" defer></script></head>');
+    updatedHtml = updatedHtml.replace(/<\\/head>/i, BROWSER_EXTRAS + '</head>');
   }
   if (updatedHtml === html) return response;
   const headers = new Headers(response.headers);
@@ -78,7 +74,9 @@ self.addEventListener('fetch', event => {
         }
 
         // Standalone app launches receive the original app document unchanged.
-        const finalResponse = await addBrowserExtras(networkResponse);
+        const finalResponse = isInstalledAppLaunch
+          ? networkResponse
+          : await addBrowserExtras(networkResponse);
 
         const cache = await caches.open(CACHE_VERSION);
         await cache.put(request, finalResponse.clone()).catch(() => {});
