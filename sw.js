@@ -33,10 +33,10 @@ async function addBrowserExtras(response) {
     updatedHtml = updatedHtml.replace(/<\/head>/i, '<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"><link rel="apple-touch-icon" href="./icon-192.png"></head>');
   }
   if (!hasInjectedExtras) {
-    updatedHtml = updatedHtml.replace(/<\\/head>/i, BROWSER_EXTRAS + '</head>');
+    updatedHtml = updatedHtml.replace(/<\/head>/i, BROWSER_EXTRAS + '</head>');
   }
   if (!updatedHtml.includes('studyai-reminders-loader')) {
-    updatedHtml = updatedHtml.replace(/<\\/head>/i, '<script id="studyai-reminders-loader" src="./reminders.js" defer><\\/script></head>');
+    updatedHtml = updatedHtml.replace(/<\/head>/i, '<script id="studyai-reminders-loader" src="./reminders.js" defer><\\/script></head>');
   }
   if (updatedHtml === html) return response;
   const headers = new Headers(response.headers);
