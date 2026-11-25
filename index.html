@@ -1166,6 +1166,24 @@ body.dark #community .scSocialDock button:hover {background:linear-gradient(135d
 @media(max-width:900px){.side .nav a.sai-pro-sideLink{border:0;background:transparent;box-shadow:none}.side .nav a.sai-pro-sideLink .sai-sideProTag{display:none}}
 </style>
 
+<style id="studyaiBasicNotesVisualUpgrade">
+#notesBasicArea .lesson{max-width:100%;overflow:hidden;border:1px solid #e3e8f5;background:linear-gradient(160deg,#fff 0%,#fbfcff 100%);box-shadow:0 14px 38px rgba(36,48,95,.07);padding:clamp(16px,3vw,28px)}
+#notesBasicArea .lesson>h2{font-size:clamp(23px,3vw,32px);line-height:1.2;margin:12px 0 8px;color:#19254a}
+#notesBasicArea .lesson>.genBtn{border:0;border-radius:13px;padding:12px 18px;background:linear-gradient(110deg,#635bff,#8b5cf6 55%,#ec4899);color:#fff;font-weight:850;box-shadow:0 8px 20px #635bff30}
+#notesBasicArea .lesson .adv-note-box,#notesBasicArea .lesson .adv-note-card{background:linear-gradient(135deg,#f0f5ff,#fff);border:1px solid #dce6ff;border-radius:16px;padding:16px;margin:15px 0}
+#notesBasicArea .lesson .adv-note-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;margin:14px 0}
+#notesBasicArea .lesson .adv-note-formula{background:linear-gradient(120deg,#f0ebff,#fff5fb);border:1px dashed #9885ed;border-radius:14px;padding:15px;text-align:center;color:#4937a0;font-size:1.12em;font-weight:850;margin:14px 0}
+#notesBasicArea .lesson .adv-note-step{background:#f0f8ff;border-left:4px solid #4f7cff;border-radius:10px;padding:12px 15px;margin:10px 0}
+#notesBasicArea .lesson .adv-note-memory{background:#fff8df;border:1px solid #f1d77d;border-radius:13px;padding:13px 15px;margin:13px 0}
+#notesBasicArea .lesson .adv-note-mistake{background:#fff1f2;border:1px solid #fecdd3;border-left:4px solid #f43f5e;border-radius:12px;padding:13px 15px;margin:13px 0}
+#notesBasicArea .lesson .adv-note-example{background:#edfff6;border:1px solid #b7efd3;border-left:4px solid #22a879;border-radius:13px;padding:14px 16px;margin:14px 0}
+#notesBasicArea .lesson .adv-note-takeaway,#notesBasicArea .lesson .adv-note-key{background:#eef6ff;border:1px solid #c9e1ff;border-radius:13px;padding:13px 15px;margin:13px 0}
+#notesBasicArea .lesson .adv-note-diagram-wrap{background:linear-gradient(145deg,#f8faff,#f2f5ff);border:1px solid #e1e7f5;border-radius:16px;padding:12px;margin:16px 0;overflow:hidden}
+#notesBasicArea .lesson .adv-note-diagram-wrap svg{display:block;width:100%;max-width:650px;height:auto;margin:auto}
+#notesBasicArea .lesson table{display:table;width:100%;border-collapse:collapse;margin:14px 0;font-size:.94em}#notesBasicArea .lesson th{background:#635bff;color:white;text-align:left;padding:10px}#notesBasicArea .lesson td{border:1px solid #e1e6f0;padding:10px;vertical-align:top}
+#notesBasicArea .lesson h3{margin-top:24px;padding-bottom:7px;border-bottom:1px solid #e9ecf5;color:#4035a0}#notesBasicArea .lesson h4{margin:19px 0 7px;color:#263b70}#notesBasicArea .lesson li{margin:6px 0;line-height:1.65}#notesBasicArea .lesson p{line-height:1.75}
+@media(max-width:600px){#notesBasicArea .lesson{padding:15px}#notesBasicArea .lesson table{font-size:12px}#notesBasicArea .lesson th,#notesBasicArea .lesson td{padding:7px}}
+</style>
 </head>
 
 <body>
@@ -2767,14 +2785,12 @@ function renderNotes(){
   const data=cached||(isPlace?"":raw);
   // Class 10 always exposes an AI-notes action, even when short starter notes already exist.
   const btn=cached
-    ? `<button class="genBtn ghost" onclick="genAINotes()">🔄 ${c==="10"?"AI notes dobara banao":"Dobara banao"}</button>`
-    : (c==="10"
-      ? `<button class="genBtn" onclick="genAINotes()">✨ AI-generated notes banao</button>`
-      : ((isPlace||raw.length<1500)?`<button class="genBtn" onclick="genAINotes()">✨ ${isPlace?"AI notes banao":"2-page detailed notes banao"}</button>`:""));
+    ? `<button class="genBtn ghost" onclick="genAINotes()">🔄 Complete notes dobara banao</button>`
+    : `<button class="genBtn" onclick="genAINotes()">✨ Complete visual notes banao</button>`;
   noteBox.innerHTML=`<div class="lesson card">
     <span class="pill">Class ${c} • ${subject}</span>
     <h2>${chosen}</h2>
-    <p class="muted">${c==="10"?"AI se chapter-wise detailed notes generate karo. Generated notes isi browser mein save ho jayenge.":"Chapter-wise study notes"}</p>
+    <p class="muted">${c==="10"?"Basic se exam-ready learning • Clear explanations • Diagrams • Solved examples • Revision":"Basic se exam-ready learning • Clear explanations • Diagrams • Solved examples • Revision"}</p>
     <div id="genStatus"></div>${btn}
     ${data}
     ${cached?"":`<div class="notice"><b>Exam tip:</b> Pehle definition samjho, phir examples aur questions practise karo.</div>`}
@@ -6141,7 +6157,7 @@ body:has(#tutor.active) #tutorPop{display:none!important}
 </style>
 <script id="advancedNotesDedicatedGeneratorScript">
 
-const ADVANCED_NOTES_RULE = "You are StudyAI Advanced Notes, an expert school teacher and learning designer. Create genuinely superior, highly understandable notes for the exact class, subject and chapter. They must look and teach better than Basic Notes: step-by-step concepts, easy examples, analogies, definitions, formulas with symbol meanings, solved examples, comparison tables, common mistakes, memory cues, exam-style questions with answers, quick revision and self-check with answer key. Use simple Hinglish (Roman Hindi plus standard academic English); explain hard words immediately. Never invent facts, textbook quotes, page numbers or exam guarantees.\nReturn an HTML fragment only, no Markdown fences, scripts, styles, event handlers or greetings. Aim for 1400-2000 useful words where the chapter needs it. Structure with h2/h3/h4, paragraphs, lists and tables. At least 3 worked examples (or worked writing/case examples for non-numerical subjects). Use visual classes adv-note-box, adv-note-grid, adv-note-card, adv-note-formula, adv-note-step, adv-note-memory, adv-note-mistake, adv-note-example, adv-note-takeaway and adv-note-diagram-wrap where helpful. Make it colourful but readable, with meaningful callouts. If a diagram genuinely helps, include 1-3 labeled INLINE SVG diagrams (flowchart, labeled process, geometry/physics diagram, timeline or conceptual schematic); use simple svg/g/path/rect/circle/ellipse/line/polyline/polygon/text/tspan elements, viewBox and explicit fill/stroke; no remote images, href links, scripts, animation, foreignObject or external references. Never force a diagram. Explain every symbol, axis and relationship. Maths must be readable: ×, ÷, √, powers, fractions and units. Prioritise correctness, clarity and memorable visual teaching over padding.";
+const ADVANCED_NOTES_RULE = "You are StudyAI's expert CBSE school teacher and visual learning designer. Create complete, accurate, student-friendly notes for the exact selected class, subject and chapter. Teach from zero knowledge to confident exam practice. Use simple Hinglish (Roman Hindi with standard academic English); define every difficult word immediately. Do not assume prior knowledge and never skip reasoning steps. Never invent textbook facts, page numbers, quotes, syllabus details or exam guarantees.\nReturn ONLY a safe HTML fragment: no Markdown fences, scripts, styles, event handlers, buttons, inputs, forms, links or greetings. Aim for 1500-2000 useful words when the chapter needs it; do not add filler. Use clear h2/h3/h4 headings, short paragraphs, numbered steps, bullets and readable comparison tables.\nMANDATORY STRUCTURE: chapter overview and why it matters; learning goals; prerequisite/basic ideas; every key topic explained step by step; real-life examples/analogies; important definitions and keywords; formulas with every symbol and unit explained plus when/how to use them; at least 3 fully worked examples with given/required/method/steps/final answer (or model writing/case examples for non-numerical subjects); comparison tables where useful; common misconceptions and corrections; memory tips; NCERT-style practice questions across easy, medium and challenging levels with answers/solutions; exam-style short and long questions with answer points; chapter summary; quick revision and self-check answer key. Keep strictly within the selected chapter and class.\nVISUAL TEACHING: Add 2-4 meaningful, labelled inline SVG diagrams wherever they genuinely help (labelled science process, life-cycle, timeline, geometry sketch, flowchart, concept map or step sequence). Use only svg, g, path, rect, circle, ellipse, line, polyline, polygon, text, tspan, title and defs/marker; include viewBox and explicit readable fills/strokes. No remote images, href, scripts, animation or external references. Explain each diagram nearby. Use classes adv-note-box, adv-note-grid, adv-note-card, adv-note-formula, adv-note-step, adv-note-memory, adv-note-mistake, adv-note-example, adv-note-takeaway, adv-note-diagram-wrap, adv-note-diagram, adv-note-highlight, adv-note-key, adv-note-compare, adv-note-pill, kp, fm, pwt, ex, tip, qr and qs for colourful learning callouts.\nMaths must be notebook-readable: use ×, ÷, √, superscripts, fractions and units; never use caret powers or ambiguous plain a/b fractions. Accuracy and clarity matter more than length."
 const ADVANCED_EXPLAIN_RULE = "You are the friendly StudyAI classroom tutor. Explain the student's exact doubt in very simple Hinglish for their selected school class. Answer directly and patiently, with short sentences. If useful, use a familiar real-life analogy, then a clear example and step-by-step reasoning. Define difficult words, do not merely repeat the notes, and explain the part a student may be missing. Keep the response well structured with short headings and bullets; usually 150-350 words, longer only if the doubt needs it. Do not make the student feel bad for not understanding. Do not invent facts; for curriculum-sensitive details, be careful. End with one tiny check-for-understanding question only when it naturally helps.";
 function renderAdvancedNoteSelectors(){
   const cls=document.getElementById("advNoteClass"),sub=document.getElementById("advNoteSubject"),ch=document.getElementById("advNoteChapter");
