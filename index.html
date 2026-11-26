@@ -1184,6 +1184,40 @@ body.dark #community .scSocialDock button:hover {background:linear-gradient(135d
 #notesBasicArea .lesson h3{margin-top:24px;padding-bottom:7px;border-bottom:1px solid #e9ecf5;color:#4035a0}#notesBasicArea .lesson h4{margin:19px 0 7px;color:#263b70}#notesBasicArea .lesson li{margin:6px 0;line-height:1.65}#notesBasicArea .lesson p{line-height:1.75}
 @media(max-width:600px){#notesBasicArea .lesson{padding:15px}#notesBasicArea .lesson table{font-size:12px}#notesBasicArea .lesson th,#notesBasicArea .lesson td{padding:7px}}
 </style>
+
+<style id="studyaiNotificationCentreCss">
+.studyTopbar{gap:10px}
+.saiNotifWrap{position:relative;display:flex;align-items:center;flex:0 0 auto}
+.saiNotifBell{position:relative;width:46px;height:46px;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--text);font-size:21px;cursor:pointer;box-shadow:0 8px 22px rgba(30,40,90,.08)}
+.saiNotifBell:hover{border-color:var(--primary);transform:translateY(-1px)}
+.saiNotifCount{position:absolute;right:-5px;top:-6px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:#ef345e;color:#fff;font:800 10px/19px system-ui;text-align:center;border:2px solid var(--panel)}
+.saiNotifPanel{display:none;position:absolute;right:0;top:56px;width:min(390px,calc(100vw - 24px));max-height:min(76vh,650px);overflow:auto;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:20px;box-shadow:0 22px 65px rgba(15,25,65,.22);z-index:10050;padding:14px}
+.saiNotifPanel.open{display:block;animation:saiNotifIn .18s ease-out}
+@keyframes saiNotifIn{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+.saiNotifHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.saiNotifHead h3{margin:0;font-size:17px}
+.saiNotifActions{display:flex;gap:6px;flex-wrap:wrap}
+.saiNotifMini{border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:9px;padding:7px 9px;font-size:11px;font-weight:750;cursor:pointer}
+.saiNotifFilters{display:flex;gap:6px;overflow:auto;padding:2px 0 10px}
+.saiNotifFilter{white-space:nowrap;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:99px;padding:6px 10px;font-size:11px;cursor:pointer}
+.saiNotifFilter.active{background:var(--accent-soft,rgba(99,91,255,.12));color:var(--primary);border-color:var(--primary);font-weight:800}
+.saiNotifList{display:grid;gap:8px}
+.saiNotifItem{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:9px;align-items:start;padding:11px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.saiNotifItem.unread{background:color-mix(in srgb,var(--primary) 6%,var(--panel));border-color:color-mix(in srgb,var(--primary) 24%,var(--line))}
+.saiNotifIcon{width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:var(--bg);font-size:18px}
+.saiNotifCopy b{display:block;font-size:12px;margin:1px 0 4px}
+.saiNotifCopy p{font-size:11px;line-height:1.5;color:var(--muted);margin:0}
+.saiNotifCopy time{display:block;font-size:10px;color:var(--muted);margin-top:6px}
+.saiNotifDot{width:8px;height:8px;border-radius:50%;background:#ef345e;margin-top:5px}
+.saiNotifEmpty{text-align:center;padding:25px 10px;color:var(--muted);font-size:12px}
+.saiNotifSettings{border-top:1px solid var(--line);margin-top:12px;padding-top:12px}
+.saiNotifSettings h4{margin:0 0 9px;font-size:13px}
+.saiNotifSettingRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:9px 0;font-size:11px;color:var(--muted)}
+.saiNotifSettingRow input[type=time]{border:1px solid var(--line);border-radius:9px;padding:7px;background:var(--bg);color:var(--text)}
+.saiNotifSettingRow input[type=checkbox]{accent-color:var(--primary);width:17px;height:17px}
+.saiNotifSave{width:100%;border:0;border-radius:11px;background:linear-gradient(110deg,var(--primary),#a855f7,#ec4899);color:#fff;padding:10px;font-weight:800;cursor:pointer;margin-top:5px}
+@media(max-width:600px){.studyTopbar{padding-right:0;gap:7px}.saiNotifBell{width:42px;height:42px;border-radius:13px}.saiNotifPanel{position:fixed;top:65px;right:10px;max-height:calc(100dvh - 82px)}.accountChip{min-width:0;padding:6px 8px}.accountChipText b{max-width:100px}.accountChipText small{max-width:100px;overflow:hidden;text-overflow:ellipsis}}
+</style>
 </head>
 
 <body>
@@ -1440,7 +1474,65 @@ const rng=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.i
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function pairs(html){
   if(!html||/Notes aa rahe hain/.test(html))return[];
-  const d=new DOMParser().parseFromString('<body>'+html+'</body>','text/html'),out=[];
+  const d=new DOMParser().parseFromString('<body>'+html+'
+<script id="studyaiNotificationCentreScript">
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const KEY='studyai_notifications_v1', OPT='studyai_notification_settings_v1';
+let items=[],prefs={reminder:false,time:'18:00',community:true,updates:true},filter='all',timer=null;
+const icons={updates:'📢',study:'📚',community:'👥',account:'👤'};
+const safe=(v)=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function load(){try{const a=JSON.parse(localStorage.getItem(KEY)||'[]');items=Array.isArray(a)?a.slice(0,100):[]}catch(e){items=[]}try{prefs=Object.assign(prefs,JSON.parse(localStorage.getItem(OPT)||'{}'))}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(items.slice(0,100)));localStorage.setItem(OPT,JSON.stringify(prefs))}catch(e){}}
+function unread(){return items.filter(x=>!x.read).length}
+function render(){
+ const count=$('saiNotifCount'),list=$('saiNotifList');if(!count||!list)return;
+ const n=unread();count.hidden=!n;count.textContent=n>99?'99+':String(n);count.title=n+' unread notifications';
+ const shown=items.filter(x=>filter==='all'||x.category===filter);
+ list.innerHTML=shown.length?shown.map(x=>'<article class="saiNotifItem '+(x.read?'':'unread')+'"><span class="saiNotifIcon">'+(icons[x.category]||'🔔')+'</span><div class="saiNotifCopy"><b>'+safe(x.title)+'</b><p>'+safe(x.message)+'</p><time>'+safe(new Date(x.created).toLocaleString())+'</time></div>'+(x.read?'<span></span>':'<span class="saiNotifDot" aria-label="Unread"></span>')+'</article>').join(''):'<div class="saiNotifEmpty">✨ You’re all caught up!<br><span style="display:block;margin-top:5px">New updates will appear here.</span></div>';
+}
+function add(title,message,category='updates',opts={}){
+ if(category==='community'&&!prefs.community)return;
+ if(category==='updates'&&!prefs.updates)return;
+ const entry={id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random()),title:String(title).slice(0,100),message:String(message).slice(0,500),category,created:Date.now(),read:false};
+ items.unshift(entry);items=items.slice(0,100);save();render();
+ if(opts.browser&&'Notification'in window&&Notification.permission==='granted'){try{new Notification(entry.title,{body:entry.message,icon:'icon-192.png',tag:entry.id})}catch(e){}}
+ return entry.id;
+}
+function open(){ $('saiNotifPanel').classList.add('open');$('saiNotifBell').setAttribute('aria-expanded','true'); }
+function close(){ $('saiNotifPanel').classList.remove('open');$('saiNotifBell').setAttribute('aria-expanded','false'); }
+function applyPrefsToUi(){$('saiNotifReminderOn').checked=!!prefs.reminder;$('saiNotifReminderTime').value=prefs.time||'18:00';$('saiNotifCommunityOn').checked=!!prefs.community;$('saiNotifUpdatesOn').checked=!!prefs.updates}
+function schedule(){
+ if(timer)clearTimeout(timer);timer=null;if(!prefs.reminder)return;
+ const [h,m]=(prefs.time||'18:00').split(':').map(Number),now=new Date(),next=new Date();next.setHours(h||0,m||0,0,0);if(next<=now)next.setDate(next.getDate()+1);
+ timer=setTimeout(()=>{const day=new Date().toLocaleDateString();let last='';try{last=localStorage.getItem('studyai_last_reminder_day')||''}catch(e){}
+ if(last!==day){add('Time for your study session 📚','A small focused study session today can make learning easier.','study',{browser:true});try{localStorage.setItem('studyai_last_reminder_day',day)}catch(e){}}
+ schedule();
+ },Math.min(next-now,2147480000));
+}
+function init(){
+ if(!$('saiNotifBell'))return;load();render();applyPrefsToUi();schedule();
+ $('saiNotifBell').addEventListener('click',()=>{$('saiNotifPanel').classList.contains('open')?close():open()});
+ document.addEventListener('click',e=>{const wrap=$('studyaiNotificationCentre');if(wrap&&!wrap.contains(e.target))close()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+ $('saiNotifReadAll').addEventListener('click',()=>{items=items.map(x=>Object.assign({},x,{read:true}));save();render()});
+ $('saiNotifClear').addEventListener('click',()=>{if(!items.length)return;if(!confirm('Clear all notifications?'))return;items=[];save();render()});
+ $('saiNotifFilters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;filter=b.dataset.filter;$('saiNotifFilters').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));render()});
+ $('saiNotifSave').addEventListener('click',async()=>{
+ prefs={reminder:$('saiNotifReminderOn').checked,time:$('saiNotifReminderTime').value||'18:00',community:$('saiNotifCommunityOn').checked,updates:$('saiNotifUpdatesOn').checked};
+ if(prefs.reminder&&'Notification'in window&&Notification.permission==='default'){
+  try{const p=await Notification.requestPermission();if(p!=='granted'){} }catch(e){}
+ }
+ save();schedule();add('Preferences saved ✓','Your notification preferences have been updated.','account');if(typeof window.say==='function')window.say('Notification settings saved ✓');
+ });
+ if(!items.length)add('Welcome to StudyAI Notifications 🎉','Important StudyAI updates, study reminders and community alerts will appear here.','updates');
+}
+window.StudyAINotifications={add,markAllRead:function(){items=items.map(x=>Object.assign({},x,{read:true}));save();render()},getUnreadCount:unread};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+</body>','text/html'),out=[];
   d.querySelectorAll('li').forEach(li=>{
     const b=li.firstElementChild;if(!b||b.tagName!=='B')return;
     const t=b.textContent.replace(/[\s:：=\-–]+$/,'').trim(),r=li.textContent.slice(b.textContent.length).replace(/^[\s:：=\-–]+/,'').replace(/\s+/g,' ').trim();
@@ -1510,6 +1602,26 @@ window.PLACEHOLDER_NOTE = PLACEHOLDER_NOTE;
 <div class="studyTopbar">
   <div class="studyTopTools">
   </div>
+  
+<div class="saiNotifWrap" id="studyaiNotificationCentre">
+  <button class="saiNotifBell" id="saiNotifBell" type="button" aria-label="Open notifications" aria-expanded="false" aria-controls="saiNotifPanel">🔔<span class="saiNotifCount" id="saiNotifCount" hidden>0</span></button>
+  <section class="saiNotifPanel" id="saiNotifPanel" aria-label="Notification centre">
+    <div class="saiNotifHead"><h3>Notifications</h3><div class="saiNotifActions"><button class="saiNotifMini" id="saiNotifReadAll" type="button">Mark all read</button><button class="saiNotifMini" id="saiNotifClear" type="button">Clear all</button></div></div>
+    <div class="saiNotifFilters" id="saiNotifFilters">
+      <button type="button" class="saiNotifFilter active" data-filter="all">All</button><button type="button" class="saiNotifFilter" data-filter="updates">Updates</button><button type="button" class="saiNotifFilter" data-filter="study">Study</button><button type="button" class="saiNotifFilter" data-filter="community">Community</button><button type="button" class="saiNotifFilter" data-filter="account">Account</button>
+    </div>
+    <div class="saiNotifList" id="saiNotifList" aria-live="polite"></div>
+    <div class="saiNotifSettings">
+      <h4>🔔 Notification preferences</h4>
+      <label class="saiNotifSettingRow"><span>Daily study reminder</span><input id="saiNotifReminderOn" type="checkbox"></label>
+      <label class="saiNotifSettingRow"><span>Reminder time</span><input id="saiNotifReminderTime" type="time" value="18:00"></label>
+      <label class="saiNotifSettingRow"><span>Community activity alerts</span><input id="saiNotifCommunityOn" type="checkbox" checked></label>
+      <label class="saiNotifSettingRow"><span>StudyAI announcements</span><input id="saiNotifUpdatesOn" type="checkbox" checked></label>
+      <button class="saiNotifSave" id="saiNotifSave" type="button">Save notification settings</button>
+      <p style="font-size:10px;color:var(--muted);line-height:1.5;margin:8px 1px 0">Browser alerts are optional. Allow permission only if you want alerts outside this page. Daily reminders run while StudyAI is open; reliable background push requires a separate push service.</p>
+    </div>
+  </section>
+</div>
   <button class="accountChip" id="accountOpen" type="button" aria-haspopup="dialog" aria-controls="accountOverlay">
     <span class="accountAvatar" id="accountAvatar">S</span>
     <span class="accountChipText"><b id="accountName">My StudyAI Account</b><small id="accountHint">Sign in to save your progress</small></span>
