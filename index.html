@@ -1191,7 +1191,7 @@ body.dark #community .scSocialDock button:hover {background:linear-gradient(135d
 .saiNotifBell{position:relative;width:46px;height:46px;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--text);font-size:21px;cursor:pointer;box-shadow:0 8px 22px rgba(30,40,90,.08)}
 .saiNotifBell:hover{border-color:var(--primary);transform:translateY(-1px)}
 .saiNotifCount{position:absolute;right:-5px;top:-6px;min-width:19px;height:19px;padding:0 5px;border-radius:99px;background:#ef345e;color:#fff;font:800 10px/19px system-ui;text-align:center;border:2px solid var(--panel)}
-.saiNotifPanel{display:none;position:absolute;right:0;top:56px;width:min(390px,calc(100vw - 24px));max-height:min(76vh,650px);overflow:auto;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:20px;box-shadow:0 22px 65px rgba(15,25,65,.22);z-index:10050;padding:14px}
+.saiNotifPanel{display:none;position:absolute;right:0;top:56px;width:min(390px,calc(100vw - 24px));max-height:min(52vh,520px);overflow:auto;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:20px;box-shadow:0 22px 65px rgba(15,25,65,.22);z-index:70;padding:14px}
 .saiNotifPanel.open{display:block;animation:saiNotifIn .18s ease-out}
 @keyframes saiNotifIn{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
 .saiNotifHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
@@ -1216,7 +1216,7 @@ body.dark #community .scSocialDock button:hover {background:linear-gradient(135d
 .saiNotifSettingRow input[type=time]{border:1px solid var(--line);border-radius:9px;padding:7px;background:var(--bg);color:var(--text)}
 .saiNotifSettingRow input[type=checkbox]{accent-color:var(--primary);width:17px;height:17px}
 .saiNotifSave{width:100%;border:0;border-radius:11px;background:linear-gradient(110deg,var(--primary),#a855f7,#ec4899);color:#fff;padding:10px;font-weight:800;cursor:pointer;margin-top:5px}
-@media(max-width:600px){.studyTopbar{padding-right:0;gap:7px}.saiNotifBell{width:42px;height:42px;border-radius:13px}.saiNotifPanel{position:fixed;top:65px;right:10px;max-height:calc(100dvh - 82px)}.accountChip{min-width:0;padding:6px 8px}.accountChipText b{max-width:100px}.accountChipText small{max-width:100px;overflow:hidden;text-overflow:ellipsis}}
+@media(max-width:600px){.studyTopbar{padding-right:0;gap:7px}.saiNotifBell{width:42px;height:42px;border-radius:13px}.saiNotifPanel{position:fixed;top:65px;right:10px;max-height:calc(100dvh - 170px);z-index:70}.accountChip{min-width:0;padding:6px 8px}.accountChipText b{max-width:100px}.accountChipText small{max-width:100px;overflow:hidden;text-overflow:ellipsis}}
 </style>
 </head>
 
